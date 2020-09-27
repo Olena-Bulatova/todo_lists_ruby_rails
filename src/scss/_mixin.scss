@@ -1,0 +1,9 @@
+//ClearFix
+
+@mixin clearfix {
+  &::after {
+    content: '\0020';
+    display: block;
+    clear: both;
+  }
+}

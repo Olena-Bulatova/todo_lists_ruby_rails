@@ -1,0 +1,19 @@
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+  display: block;
+}
+
+body {
+  background: $primaryBGColor;
+  font: 16px $primaryFont;
+  height: 100%;
+  color: $baseFontColor;
+  padding: 0;
+}
+.wrapper {
+  height: 100%;
+  margin: 0 auto;
+  @include clearfix;
+}
+
+
+

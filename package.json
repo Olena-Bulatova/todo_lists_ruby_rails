@@ -1,0 +1,29 @@
+{
+  "name": "todo_lists_ruby_rails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./server/index.js",
+    "watch": "webpack --watch",
+    "build": "webpack",
+    "dev": "webpack --env.mode=development",
+    "test": "node ./server/index1.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Olena-Bulatova/todo_lists_ruby_rails.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Olena-Bulatova/todo_lists_ruby_rails/issues"
+  },
+  "homepage": "https://github.com/Olena-Bulatova/todo_lists_ruby_rails#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0"
+  }
+}
