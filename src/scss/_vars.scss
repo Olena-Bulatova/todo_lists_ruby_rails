@@ -1,7 +1,11 @@
 //Base Color
 $black: #000;
 $baseFontColor: $black;
-$primaryBGColor: #ffffff;
+$primaryBGColor: linear-gradient(180deg, rgba(187,185,158,1) 4%, rgba(193,193,190,1) 36%, rgba(215,176,51,1) 61%, rgba(192,102,12,1) 100%);
+$greyBGColor: #bbb99e;
+$orangeBGColor: #c0660c;
+$yellowBGColor: #d7b033;
+$elementColor: #3f68a9;
 
 //Typography
 $primaryFont: OpenSans, Arial, Helvetica, sans-serif;

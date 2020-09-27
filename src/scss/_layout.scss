@@ -2,17 +2,27 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
   display: block;
 }
 
-body {
-  background: $primaryBGColor;
-  font: 16px $primaryFont;
+/* html {
+  overflow: hidden;
+} */
+
+html {
   height: 100%;
+}
+
+body {
+  background-color: $greyBGColor;
+  background: $primaryBGColor no-repeat;
+  font: 18px $primaryFont;
   color: $baseFontColor;
-  padding: 0;
+  height: 100%;
 }
 .wrapper {
-  height: 100%;
   margin: 0 auto;
-  @include clearfix;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 

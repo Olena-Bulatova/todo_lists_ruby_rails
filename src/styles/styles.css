@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Eric Meyer's CSS Reset */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -389,26 +390,135 @@ template {
   display: none;
 }
 
+@font-face {
+  font-family: OpenSans;
+  src: url(../fonts/opensans.woff2);
+}
 article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
   display: block;
 }
 
-body {
-  background: #ffffff;
-  font: 16px OpenSans, Arial, Helvetica, sans-serif;
+/* html {
+  overflow: hidden;
+} */
+html {
   height: 100%;
+}
+
+body {
+  background-color: #bbb99e;
+  background: linear-gradient(180deg, #bbb99e 4%, #c1c1be 36%, #d7b033 61%, #c0660c 100%) no-repeat;
+  font: 18px OpenSans, Arial, Helvetica, sans-serif;
   color: #000;
-  padding: 0;
+  height: 100%;
 }
 
 .wrapper {
-  height: 100%;
   margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
-.wrapper::after {
-  content: " ";
+
+.header {
+  text-align: center;
+  text-transform: uppercase;
+}
+.header__title {
+  margin-top: 50px;
+  margin-bottom: 0;
+  font-weight: bold;
+}
+.header__subtitle {
+  font-size: 20px;
+}
+
+.footer {
+  text-align: center;
+  text-transform: capitalize;
+  color: #fff;
+  margin: 30px;
+}
+.footer__text::before {
+  content: "";
+  font-family: "Font Awesome 5 Free";
+  font-size: 1em;
+  display: inline-block;
+  padding-right: 5px;
+}
+
+.form {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 50%;
+  margin: 0 auto;
+  text-transform: capitalize;
+  border-radius: 0 0 15px 15px;
+}
+.form__button, .form__title {
+  color: #fff;
+  font-size: 20px;
+  background-color: #3f68a9;
+}
+.form__button, .form__lable, .form__input {
   display: block;
-  clear: both;
+  margin: 5px 20px;
+}
+.form__button {
+  padding: 10px 30px;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: inline-block;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin: 20px auto;
+  border-radius: 3px;
+}
+.form__button:hover, .form__button:focus, .form__button:active {
+  opacity: 0.6;
+}
+.form__title {
+  padding: 20px;
+  text-align: center;
+}
+.form__type {
+  margin-right: 20px;
+  line-height: 30px;
+  display: inline-block;
+  opacity: 0.6;
+  padding-bottom: 5px;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+}
+.form__type:last-child {
+  margin-right: 0;
+}
+.form__type--active {
+  opacity: 1;
+  font-weight: bold;
+}
+.form__type:hover, .form__type:focus, .form__type:active {
+  opacity: 1;
+  border-color: #fff;
+  font-weight: normal;
+}
+.form__lable {
+  font-size: 14px;
+}
+.form__input {
+  background-color: rgba(187, 185, 158, 0.2);
+  opacity: 0.6;
+  border: none;
+  padding: 10px;
+}
+.form__input:focus, .form__input:active, .form__input:hover {
+  outline: none;
+  border: none;
+  opacity: 1;
 }
 
 /*# sourceMappingURL=styles.css.map */
