@@ -133,8 +133,8 @@ class SignInForm  {
         fetch(`/users/${currentUser.login}`)
         .then(currentUser => currentUser.json())
         .then(currentUser => {
-            this.currentUser = currentUser.id;
-            this.subscribers.publish('todoLists', this.currentUser);          
+            this.currentUser = currentUser['_id'];
+            this.subscribers.publish('todoLists', this.currentUser);
         })
         .catch(err => console.error(`Connection Error:${err}`));
     }
@@ -215,7 +215,7 @@ class SignInController  {
                 pass: passInput.value,
             }                     
             if(currentText === 'sign in') {
-                this.model.getUser(user);
+                this.model.getUser(user);  
             } else if(currentText === 'sign up') {
                 user.name = nameInput.value;
                 user.surname = surnameInput.value;
@@ -231,12 +231,14 @@ class SignInController  {
 
 class TodoListView {
     constructor() {
-
+        this.currentUser;
     }
 
-    showForm() {
+    showForm(currentUser) {
+        this.currentUser = currentUser;
+
         const mainContent = document.querySelector('.main-content');
-        mainContent = '';
+        mainContent.innerHTML = '';
 
         const projectList = document.createElement('div');
         projectList.classList.add('project-list');
@@ -244,8 +246,66 @@ class TodoListView {
 
         const addProjectButton = document.createElement('button');
         addProjectButton.classList.add('project-button');
+        addProjectButton.innerText = 'Add TODO List';
         mainContent.append(addProjectButton);
         
+    }
+
+    showProject() {
+        const projectList = document.querySelector('.project-list');
+
+        const project = document.createElement('section');
+        project.classList.add('project');
+        projectList.append(project);
+
+        const projectHeader = document.createElement('div');
+        projectHeader.classList.add('project__header');
+        project.append(projectHeader);
+
+        const projectTime = document.createElement('button');
+        projectTime.classList.add('project__button');
+        projectTime.classList.add('project__button--calendar');
+        projectHeader.append(projectTime);
+
+        const projectTitle = document.createElement('input');
+        projectTitle.classList.add('project__title');
+        projectTitle.setAttribute('placeholder', 'Enter Project name');
+        projectHeader.append(projectTitle);
+
+        const projectEditName = document.createElement('button');
+        projectEditName.classList.add('project__button');
+        projectEditName.classList.add('project__button--edit');
+        projectHeader.append(projectEditName);        
+
+        const projectDelete = document.createElement('button');
+        projectDelete.classList.add('project__button');
+        projectDelete.classList.add('project__button--delete');
+        projectHeader.append(projectDelete);
+
+        const taskTitle = document.createElement('div');
+        taskTitle.classList.add('project__task-title');
+        project.append(taskTitle);
+
+        const taskList = document.createElement('button');
+        taskList.classList.add('project__button');
+        taskList.classList.add('project__button--show');
+        taskTitle.append(taskList);
+
+        const inputTaskName = document.createElement('input');
+        inputTaskName.classList.add('project__task-name');
+        inputTaskName.setAttribute('placeholder', 'Start typing here to create task...');
+        taskTitle.append(inputTaskName);
+
+        const taskAdd = document.createElement('button');
+        taskAdd.classList.add('project__button');
+        taskAdd.innerText = 'Add Task';
+        taskAdd.classList.add('project__button--add');
+        taskTitle.append(taskAdd);
+
+    }
+
+    showTaskList() {
+
     }
     
 }
@@ -255,8 +315,10 @@ class TodoListForm {
         this.view = view;
     }
 
-    handleShowForm() {
-        this.view.showForm();
+    handleShowForm(currentUser) {
+        this.getTodoList();
+        this.getTasks();
+        this.view.showForm(currentUser);
     }
 
     getTodoList() {
@@ -268,7 +330,7 @@ class TodoListForm {
     }
 
     addTodoList() {
-
+        this.view.showProject();
     }
 
     addTasks() {
@@ -291,8 +353,16 @@ class TodoListController {
         this.subscribers = subscribers;
     }
 
-    handleShowForm() {
-        this.model.handleShowForm();
+    handleShowForm(currentUser) {
+        this.model.handleShowForm(currentUser);
+        this.actionForForm();
+    }
+
+    actionForForm() {
+        const addProjectButton = document.querySelector('.project-button');
+        addProjectButton.addEventListener('click', () => {
+            this.model.addTodoList();
+        })
     }
 }
 
@@ -326,6 +396,8 @@ document.addEventListener ('DOMContentLoaded', function() {
     const todoListView = new TodoListView();
     const todoListForm = new TodoListForm(todoListView, subscribers);
     const todoListController = new TodoListController(todoListForm, subscribers);
+
+    subscribers.publish.bind(subscribers);
 
     subscribers.subscribe('signIn', signInController.handleShowForm.bind(signInController));
     subscribers.subscribe('todoLists', todoListController.handleShowForm.bind(todoListController));    

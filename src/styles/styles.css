@@ -398,16 +398,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
   display: block;
 }
 
-/* html {
-  overflow: hidden;
-} */
 html {
   height: 100%;
 }
 
 body {
   background-color: #bbb99e;
-  background: linear-gradient(180deg, #bbb99e 4%, #c1c1be 36%, #d7b033 61%, #c0660c 100%) no-repeat;
+  background: linear-gradient(180deg, #bbb99e 4%, #c1c1be 36%, #d7b033 61%, #c0660c 100%) fixed no-repeat;
   font: 18px OpenSans, Arial, Helvetica, sans-serif;
   color: #000;
   height: 100%;
@@ -415,7 +412,6 @@ body {
 
 .wrapper {
   margin: 0 auto;
-  height: 100%;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -439,6 +435,7 @@ body {
   text-transform: capitalize;
   color: #fff;
   margin: 30px;
+  font-size: 14px;
 }
 .footer__text::before {
   content: "";
@@ -448,13 +445,23 @@ body {
   padding-right: 5px;
 }
 
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+button:hover, button:active {
+  opacity: 0.6;
+}
+
 .form {
   background-color: #fff;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   width: 50%;
-  margin: 0 auto;
+  margin: 20px auto;
+  align-self: center;
   text-transform: capitalize;
   border-radius: 0 0 15px 15px;
 }
@@ -472,14 +479,8 @@ body {
   text-transform: uppercase;
   font-weight: bold;
   display: inline-block;
-  border: none;
-  outline: none;
-  cursor: pointer;
   margin: 20px auto;
   border-radius: 3px;
-}
-.form__button:hover, .form__button:focus, .form__button:active {
-  opacity: 0.6;
 }
 .form__title {
   padding: 20px;
@@ -519,6 +520,40 @@ body {
   outline: none;
   border: none;
   opacity: 1;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.project-list {
+  width: 60%;
+  margin: 20px auto;
+}
+.project-button {
+  background-color: #3f68a9;
+  border-radius: 3px;
+  display: inline-block;
+  padding: 15px 40px 15px 50px;
+  margin: 20px auto;
+  position: relative;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+}
+.project-button::before {
+  content: "";
+  font-family: "Font Awesome 5 Free";
+  position: absolute;
+  font-size: 30px;
+  display: inline-block;
+  margin: auto 0;
+  top: calc(50% - 15px);
+  transform: translateX(-100%);
+  padding-right: 10px;
+  color: #334a71;
 }
 
 /*# sourceMappingURL=styles.css.map */

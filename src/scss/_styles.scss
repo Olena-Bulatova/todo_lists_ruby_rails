@@ -21,6 +21,7 @@
     text-transform: capitalize;
     color: #fff;
     margin: 30px;
+    font-size: 14px;
 
     &__text {
 
@@ -37,13 +38,25 @@
 //Authorization form
 //-----------------------------------------------------------------------------
 
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &:hover,
+    &:active {   
+        opacity: .6;
+    }
+}
+
 .form {
     background-color: #fff;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     width: 50%;
-    margin: 0 auto;
+    margin: 20px auto;
+    align-self: center;
     text-transform: capitalize;
     border-radius: 0 0 15px 15px;
     
@@ -67,17 +80,8 @@
         text-transform: uppercase;
         font-weight: bold;
         display: inline-block;
-        border: none;
-        outline: none;
-        cursor: pointer;
         margin: 20px auto;
         border-radius: 3px;
-
-        &:hover,
-        &:focus,
-        &:active {   
-            opacity: .6;
-        }
     }
 
     &__title {
@@ -128,6 +132,47 @@
             outline: none;
             border: none;
             opacity: 1;
+        }
+    }
+}
+
+//Project styles
+//-----------------------------------------------------------------------------
+
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.project {
+    &-list {
+        width: 60%;
+        margin: 20px auto;
+    }
+
+    &-button {
+        background-color: $elementColor;
+        border-radius: 3px;
+        display: inline-block;
+        padding: 15px 40px 15px 50px;
+        margin: 20px auto;
+        position: relative;
+        color: #fff;
+        font-weight: bold;
+        font-size: 18px;
+
+        &::before {
+            content: "\f067";
+            font-family: "Font Awesome\ 5 Free";
+            position: absolute;
+            font-size: 30px;
+            display: inline-block;
+            margin: auto 0;
+            top: calc(50% - 15px);
+            transform: translateX(-100%);
+            padding-right: 10px;
+            color: $plusColorAddButton;
         }
     }
 }
