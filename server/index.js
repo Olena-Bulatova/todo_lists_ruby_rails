@@ -36,6 +36,44 @@ const UsersShema = new mongoose.Schema({
 
 const Users = new mongoose.model('Users', UsersShema);
 
+const ProjectsShema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: false,
+    },
+    deadline: {
+        type: Date,
+        required: false,
+    },
+    userId: {
+        type: String,
+        required: true,
+    }
+});
+
+const Projects = new mongoose.model('Projects', ProjectsShema);
+
+const TasksShema = new mongoose.Schema({
+    nameTask: {
+        type: String,
+        required: true,
+    },
+    done: {
+        type: Boolean,
+        required: true,
+    },
+    priority: {
+        type: String,
+        required: false,
+    },
+    projectId: {
+        type: String,
+        required: true,
+    }
+});
+
+const Tasks = new mongoose.model('Tasks', TasksShema);
+
 app.listen(process.env.PORT, () => {
     console.log('Server running...');
     console.log('Listening at localhost:' + process.env.PORT);
@@ -60,148 +98,86 @@ app.post('/users', (req, res) => {
     .catch(err => res.send(err));
 });
 
-/* let db; 
-
-const url = 'mongodb://localhost:27017';
-const client = new MongoClient(url); 
-
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
-
-app.get('/tasks', (req, res) => {
-    db.collection('tasks').find().toArray((err, docs) => {
-        if(err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        res.send(docs);
-    });
+app.post('/projects', (req, res) => {
+    Projects.create({
+        name: req.body.name,
+        deadline: req.body.deadline,
+        priority: req.body.priority,
+        userId: req.body.userId
+    })
+    .then(project => res.send(project))
+    .catch(err => console.log(err));
 });
 
-app.get('/services', (req, res) => {
-    db.collection('services').find().toArray((err, docs) => {
-        if(err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        res.send(docs);
-    });
+app.get('/projects/:id', (req, res) => {
+    Projects.find({userId: req.params.id})
+    .then(projects => res.send(projects))
+    .catch(err => res.send(err));
 });
 
-app.get('/tasks/:id', (req, res) => {
-    db.collection('tasks').findOne({_id: ObjectID(req.params.id)}, (err, docs) => {
+app.put('/projects/:id', (req, res) => {
+    Projects.findById(req.params.id, (err, project) => {
         if(err) {
             console.error(err);
             return res.sendStatus(500);
         }
-        res.send(docs);
-    });
-});
-
-app.get('/services/:id', (req, res) => {
-    db.collection('services').findOne({_id: ObjectID(req.params.id)}, (err, docs) => {
-        if(err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        res.send(docs);
-    });
-});
-
-app.post('/services', (req, res) => {
-    let service = {
-        type: req.body.type, 
-        tasks: req.body.tasks
-    }
-
-    db.collection('services').insertOne(service, err => {
-        if(err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        res.send(service);
-    });
-});
-
-app.post('/tasks', (req, res) => {
-    let task = {
-        typeOfService: req.body.typeOfService,
-        taskOfService: req.body.taskOfService, 
-        dateCreating: req.body.dateCreating, 
-        taskText: req.body.taskText, 
-        description: req.body.description, 
-        location: req.body.location 
-    }
-
-    db.collection('tasks').insertOne(task, err => {
-        if(err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
+        project.name = req.body.name;
+        project.save();
         res.sendStatus(200);
     });
 });
 
-app.put('/tasks/:id', (req, res) => {
-    db.collection('tasks').updateOne({_id: ObjectID(req.params.id)},
-        {$set: {
-            typeOfService: req.body.typeOfService,
-            taskOfService: req.body.taskOfService, 
-            dateCreating: req.body.dateCreating, 
-            taskText: req.body.taskText, 
-            description: req.body.description, 
-            location: req.body.location
-        }}, err => {
+app.delete('/projects/:id', (req, res) => {
+    Projects.findById(req.params.id, (err, project) => {
         if(err) {
             console.error(err);
             return res.sendStatus(500);
         }
+        project.remove();
+        res.sendStatus(200);        
     });
-    res.sendStatus(200);
 });
 
-app.put('/services/:id', (req, res) => {
-    db.collection('services').updateOne({_id: ObjectID(req.params.id)},
-        {$set: {
-            type: req.body.type,
-            tasks: req.body.tasks, 
-        }}, err => {
+
+
+app.post('/tasks', (req, res) => {
+    Tasks.create({
+        nameTask: req.body.nameTask,
+        done: req.body.done,
+        projectId: req.body.projectId
+    })
+    .then(task => res.send(task))
+    .catch(err => console.log(err));
+});
+
+app.get('/tasks/:id', (req, res) => {
+    Tasks.find({projectId: req.params.id}).sort({priority: -1})
+    .then(task => res.send(task))
+    .catch(err => res.send(err));
+});
+
+app.put('/tasks/:id', (req, res) => {
+    Tasks.findById(req.params.id, (err, task) => {
         if(err) {
             console.error(err);
-            return res.sendStatus(500);
+            return res.s
+            sendStatus(500);
         }
+        if(req.body.nameTask) task.nameTask = req.body.nameTask;
+        task.done = req.body.done || false;        
+        if(req.body.priority) task.priority = req.body.priority;
+        task.save();
+        res.sendStatus(200);
     });
-    res.sendStatus(200);
 });
 
 app.delete('/tasks/:id', (req, res) => {
-    db.collection('tasks').deleteOne({_id: ObjectID(req.params.id)}, err => {
+    Tasks.findById(req.params.id, (err, task) => {
         if(err) {
             console.error(err);
             return res.sendStatus(500);
         }
+        task.remove();
+        res.sendStatus(200);        
     });
-    res.sendStatus(200);
 });
-
-app.get('/location', (req, res) => {
-    request('https://ipinfo.io', (err, respons, body) => {
-    if(err) {
-        console.error(err);
-        return res.sendStatus(500);
-    }
-    return res.send(body);
-  });
-});
-
-
-client.connect(err => {
-    console.log('Connection success');
-
-    db = client.db(dbname); 
-
-    app.listen(process.env.PORT, () => {
-        console.log('Server running...');
-        console.log('Listening at localhost:' + process.env.PORT);
-        console.log('Opening your system browser...');
-    }); 
-}); */

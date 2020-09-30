@@ -454,12 +454,19 @@ button:hover, button:active {
   opacity: 0.6;
 }
 
+input:hover, input:focus, input:active,
+textarea:hover,
+textarea:focus,
+textarea:active {
+  outline: none;
+}
+
 .form {
   background-color: #fff;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  width: 50%;
+  width: 40%;
   margin: 20px auto;
   align-self: center;
   text-transform: capitalize;
@@ -483,8 +490,12 @@ button:hover, button:active {
   border-radius: 3px;
 }
 .form__title {
-  padding: 20px;
+  padding: 10px;
   text-align: center;
+}
+.form__title-text {
+  font-size: 12px;
+  text-transform: initial;
 }
 .form__type {
   margin-right: 20px;
@@ -517,7 +528,6 @@ button:hover, button:active {
   padding: 10px;
 }
 .form__input:focus, .form__input:active, .form__input:hover {
-  outline: none;
   border: none;
   opacity: 1;
 }
@@ -528,9 +538,170 @@ button:hover, button:active {
   flex-direction: column;
 }
 
+.project {
+  width: 100%;
+  margin-bottom: 50px;
+}
+.project:last-child {
+  margin-bottom: 0;
+}
+.project div {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  line-height: 100%;
+}
+.project__header {
+  color: #fff;
+  font-size: 20px;
+  background-color: #3f68a9;
+}
+.project__button {
+  flex-grow: 1;
+  background-color: transparent;
+}
+.project__button::before {
+  font-size: 1.2rem;
+  font-family: "Font Awesome 5 Free";
+  color: rgba(255, 255, 255, 0.5);
+}
+.project__button--calendar::before {
+  content: "";
+  font-size: 2rem;
+  color: #475e82;
+}
+.project__button--edit::before {
+  content: "";
+  padding-right: 10px;
+  font-weight: bold;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+.project__button--delete::before {
+  content: "";
+}
+.project__button--show::before {
+  content: "";
+  font-size: 2rem;
+  font-weight: bold;
+  color: #599172;
+}
+.project__button--add {
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #599172;
+  color: #fff;
+  text-shadow: 1px 1px 1px 1px rgba(123, 123, 123, 0.2);
+  border-radius: 0 5px 5px 0;
+}
+.project__title {
+  flex-grow: 999;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+}
+.project__title::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.project__task-title {
+  background-color: #dcdcdc;
+  font-size: 18px;
+}
+.project__task-name {
+  flex-grow: 99;
+  border-width: 1px;
+  border-radius: 2px 0 0 2px;
+}
+.project__task-list {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+}
+.project__task-item {
+  border-top: 1px solid rgba(123, 123, 123, 0.8);
+  color: rgba(123, 123, 123, 0.8);
+}
+.project__task-item:first-child {
+  border-top: none;
+}
+.project__task-item:hover {
+  background-color: #fcfed5;
+  cursor: pointer;
+}
+.project__task-check, .project__task-input, .project__task-action {
+  margin: 0 auto;
+  text-align: center;
+  line-height: 100%;
+  height: 50px;
+  vertical-align: middle;
+}
+.project__task-check {
+  border-right: 4px double rgba(123, 123, 123, 0.8);
+}
+.project__task-input {
+  border-right: 1px solid rgba(123, 123, 123, 0.8);
+  width: 75%;
+}
+.project__task-input--name {
+  width: 90%;
+  margin: 10px;
+  height: 24px;
+  resize: none;
+  border: none;
+  overflow: hidden;
+  line-height: 20px;
+  background-color: transparent;
+}
+.project__task-input--name:hover {
+  cursor: pointer;
+}
+.project__task-input--check {
+  margin: 0 10px;
+}
+.project__task-input--number {
+  border: none;
+  outline: none;
+  border-radius: 0;
+  height: 1rem;
+  width: 1.8rem;
+  opacity: 0.8;
+  font-size: 0.8rem;
+  background-color: transparent;
+  border-right: 1px solid rgba(123, 123, 123, 0.8);
+}
+.project__task-input--hidden {
+  width: 90%;
+  margin: 10px;
+  line-height: 20px;
+  z-index: -999;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: transparent;
+}
+.project__task-input--done {
+  text-decoration: line-through;
+}
+.project__task-button {
+  background-color: transparent;
+}
+.project__task-button::before {
+  font-size: 1rem;
+  font-family: "Font Awesome 5 Free";
+  color: rgba(123, 123, 123, 0.8);
+}
+.project__task--edit::before {
+  content: "";
+  padding-right: 10px;
+  font-weight: bold;
+  border-right: 1px solid rgba(123, 123, 123, 0.8);
+}
+.project__task--delete::before {
+  content: "";
+}
 .project-list {
   width: 60%;
-  margin: 20px auto;
+  margin: 10px auto;
 }
 .project-button {
   background-color: #3f68a9;
