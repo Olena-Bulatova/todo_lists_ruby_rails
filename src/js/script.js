@@ -67,6 +67,10 @@ class SignInView  {
 
         const formTitle = document.querySelector('.form__title');
 
+        const typeForm = document.querySelectorAll('.form__type');
+        typeForm.forEach(item => item.classList.remove('form__type--active'));
+        typeForm[0].classList.add('form__type--active')
+
         const subTitle = formTitle.querySelector('.form__title-text');
         if(subTitle) subTitle.remove();
 
@@ -80,7 +84,11 @@ class SignInView  {
 
     showSingUp() {
         const formButton = document.querySelector('.form__button');
-        formButton.innerText = 'sign up';
+        formButton.innerText = 'sign up';        
+
+        const typeForm = document.querySelectorAll('.form__type');
+        typeForm.forEach(item => item.classList.remove('form__type--active'));
+        typeForm[1].classList.add('form__type--active')
         
         const formTitle = document.querySelector('.form__title');
 
@@ -145,17 +153,25 @@ class SignInForm  {
 
     getUser(currentUser, check) {
         fetch(`/users/${currentUser.login}`)
-        .then(currentUser => currentUser.json())
-        .then(currentUser => {
+        .then(user => user.json())
+        .then(user => {
             if(check) {
-                alert('Please chenge login name, this login already in use!');
-                return false;
+                if(user.login === currentUser.login) {                    
+                    alert('Please chenge login name, this login already in use!');
+                }
             } else {
-                this.currentUser = currentUser['_id'];
+                this.currentUser = user['_id'];
                 this.subscribers.publish('todoLists', this.currentUser);
             }
         })
-        .catch(err => console.error(`Connection Error:${err}`));
+        .catch(err => {
+            if (check) {
+                this.addUser(currentUser);
+                this.handleShowSingIn();
+            }  else {
+                console.error(`Connection Error:${err}`);
+            }
+        });
     }
 
     addUser(user) {
@@ -216,8 +232,6 @@ class SignInController  {
                 } else if(currentText === 'sign up') {
                     this.handleShowSingUp();                    
                 }
-                typeForm.forEach(item => item.classList.remove('form__type--active'));
-                currentElement.classList.add('form__type--active');
             }
         });
 
@@ -228,7 +242,6 @@ class SignInController  {
             const passInput = document.querySelector('#pass');
             let currentElement = event.target;
             let currentText = currentElement.innerText.toLowerCase();
-            let typeForm = document.querySelectorAll('.form__type')
             let user = {
                 login: loginInput.value,
                 pass: passInput.value,
@@ -240,13 +253,8 @@ class SignInController  {
                 } else if(currentText === 'sign up') {
                     if(nameInput.value && surnameInput.value) {
                         user.name = nameInput.value;
-                        user.surname = surnameInput.value;
-                        typeForm.forEach(item => item.classList.remove('form__type--active'));
-                        typeForm[0].classList.add('form__type--active');
-                        if(!this.model.getUser(user, true)) {                    
-                            this.model.addUser(user);                   
-                            this.handleShowSingIn(); 
-                        }
+                        user.surname = surnameInput.value;;               
+                        this.model.getUser(user,true);
                     } else {
                         alert('Fill all fields!');
                     } 
@@ -578,19 +586,30 @@ class TodoListController {
     actionForProject() {
         const taskAdd = document.querySelectorAll('.project__button--add');
 
+        let addTask = async(event) => {
+            let parent = event.target.parentElement;
+            let currentProject = parent.parentElement.id;                                  
+            
+            if(parent.childNodes[1].value) {
+                await this.model.addTasks(currentProject, parent.childNodes[1].value);
+                this.handleTasksList(currentProject);
+                parent.childNodes[1].value = '';
+            } else {
+                alert('Please, enter name of task');
+            }
+        }
+
         taskAdd.forEach( item => {
             item.addEventListener('click', (event) => {
-                let parent = event.target.parentElement;
-                let currentProject = parent.parentElement.id;
-                let addTask = async (nameTask) => {                                    
-                    await this.model.addTasks(currentProject, nameTask);
-                    this.handleTasksList(currentProject);
-                }
-                if(parent.childNodes[1].value) {
-                    addTask(parent.childNodes[1].value);
-                    parent.childNodes[1].value = '';
-                } else {
-                    alert('Please, enter name of task');
+                addTask(event);
+            });
+        })
+        const inputTaskName = document.querySelectorAll('.project__task-name');
+
+        inputTaskName.forEach( item => {
+            item.addEventListener('keyup', (event) => {
+                if(event.keyCode === 13) {
+                    addTask(event);            
                 }
             });
         })
