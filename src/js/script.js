@@ -65,6 +65,11 @@ class SignInView  {
         const formButton = document.querySelector('.form__button');
         formButton.innerText = 'sign in';
 
+        const message = document.querySelector('.form__message');
+        if(message) {
+            message.remove();
+        }
+
         const formTitle = document.querySelector('.form__title');
 
         const typeForm = document.querySelectorAll('.form__type');
@@ -82,9 +87,31 @@ class SignInView  {
 
     }
 
+    showMessage(messageText, messageType) {
+        const formTitle = document.querySelector('.form__title');
+        let message = document.querySelector('.form__message');
+        let styleType = `form__message--${messageType}`;
+
+        if(message) {
+            message.remove();
+        } else {
+            message = document.createElement('p');
+            message.classList.add('form__message');
+            message.classList.add(styleType);
+            message.innerText = messageText;
+            formTitle.after(message);
+        }
+
+    }
+
     showSingUp() {
         const formButton = document.querySelector('.form__button');
-        formButton.innerText = 'sign up';        
+        formButton.innerText = 'sign up';
+
+        const message = document.querySelector('.form__message');
+        if(message) {
+            message.remove();
+        }
 
         const typeForm = document.querySelectorAll('.form__type');
         typeForm.forEach(item => item.classList.remove('form__type--active'));
@@ -157,19 +184,22 @@ class SignInForm  {
         .then(user => {
             if(check) {
                 if(user.login === currentUser.login) {                    
-                    alert('Please chenge login name, this login already in use!');
+                    this.view.showMessage('An account with this login already exists. Please, input another login.', 'error');
                 }
-            } else {
+            } else if(user.password === currentUser.pass){
                 this.currentUser = user['_id'];
                 this.subscribers.publish('todoLists', this.currentUser);
+            } else {
+                this.view.showMessage('Password is wrong. Please, input correct.', 'error');
             }
         })
         .catch(err => {
             if (check) {
                 this.addUser(currentUser);
                 this.handleShowSingIn();
+                this.view.showMessage('User has been successfully created, you can sing in to you account', 'success');
             }  else {
-                console.error(`Connection Error:${err}`);
+                this.view.showMessage('No user with this login. Please, sing up.', 'error');
             }
         });
     }
@@ -212,8 +242,48 @@ class SignInController  {
     handleShowSingIn() {
         this.model.handleShowSingIn();
     }
+
     handleShowSingUp() {
         this.model.handleShowSingUp();
+    }
+
+    validation(nameInput, surnameInput, loginInput, passInput) {
+
+        if (nameInput && surnameInput && loginInput && passInput) {
+            if(!nameInput.value) {
+                nameInput.setCustomValidity('Please, enter name!');
+                nameInput.reportValidity();
+                return false;
+            } else if(!surnameInput.value) {
+                surnameInput.setCustomValidity('Please, enter surname!');
+                surnameInput.reportValidity();                
+                return false;
+            } else if(!loginInput.value) {
+                loginInput.setCustomValidity('Please, enter login!');
+                loginInput.reportValidity();                
+                return false;
+            } else if(!passInput.value) {
+                passInput.setCustomValidity('Please, enter password!');
+                passInput.reportValidity();                
+                return false;
+            } else {
+                return true;
+            }
+
+        } else {
+            if(!loginInput.value) {
+                loginInput.setCustomValidity('Please, enter login!');
+                loginInput.reportValidity();                
+                return false;
+            } else if(!passInput.value) {
+                passInput.setCustomValidity('Please, enter password!');
+                passInput.reportValidity();
+                return false;
+            } else {
+                return true;
+            }
+        } 
+
     }
 
     actionForForm() {
@@ -235,35 +305,35 @@ class SignInController  {
             }
         });
 
-        formButton.addEventListener('click', event => {
+        formButton.addEventListener('click', event => {            
             const nameInput = document.querySelector('#name');
             const surnameInput = document.querySelector('#surname');
             const loginInput = document.querySelector('#login');
-            const passInput = document.querySelector('#pass');
+            const passInput = document.querySelector('#pass');                                
+            event.preventDefault();
             let currentElement = event.target;
             let currentText = currentElement.innerText.toLowerCase();
+
             let user = {
                 login: loginInput.value,
                 pass: passInput.value,
             }
-            if(loginInput.value && passInput.value) {                    
-                event.preventDefault();
+
+            let validation = this.validation(nameInput, surnameInput, loginInput, passInput);
+
+            if(loginInput.value && passInput.value && validation) {
+                
                 if(currentText === 'sign in') {
                     this.model.getUser(user);  
                 } else if(currentText === 'sign up') {
                     if(nameInput.value && surnameInput.value) {
                         user.name = nameInput.value;
-                        user.surname = surnameInput.value;;               
+                        user.surname = surnameInput.value;               
                         this.model.getUser(user,true);
-                    } else {
-                        alert('Fill all fields!');
                     } 
                 }
-            } else {
-                alert('Fill all fields!');
-            }                     
-            
-        })
+            }
+        });
 
 
     }
@@ -662,7 +732,18 @@ class TodoListController {
                 })
 
             });
-        })
+        });
+
+        const taskListShow = document.querySelectorAll('project__button--show');
+        taskListShow.forEach( item => {
+            item.addEventListener('click', event => {                
+                let parent = event.target.parentElement;
+                let currentProject = parent.parentElement;
+                let taskList = currentProject.querySelector('.project__task-list');
+                console.log(taskList.classList);
+            });
+        });
+        
     }
 
     actionForTasks(project) {

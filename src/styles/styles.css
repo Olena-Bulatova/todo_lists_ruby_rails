@@ -472,6 +472,34 @@ textarea:active {
   text-transform: capitalize;
   border-radius: 0 0 15px 15px;
 }
+.form__message {
+  margin: 10px 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  text-transform: none;
+  display: flex;
+  align-items: center;
+}
+.form__message--error {
+  background-color: rgba(232, 143, 143, 0.2);
+}
+.form__message--error::before {
+  color: rgba(232, 143, 143, 0.7);
+}
+.form__message--success {
+  background-color: rgba(143, 232, 180, 0.2);
+}
+.form__message--success::before {
+  color: rgba(143, 232, 180, 0.7);
+}
+.form__message::before {
+  content: "";
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  font-size: 15px;
+  margin-right: 5px;
+}
 .form__button, .form__title {
   color: #fff;
   font-size: 20px;
@@ -599,6 +627,7 @@ textarea:active {
   background-color: transparent;
   border: none;
   color: #fff;
+  line-height: 30px;
 }
 .project__title::placeholder {
   color: rgba(255, 255, 255, 0.3);
