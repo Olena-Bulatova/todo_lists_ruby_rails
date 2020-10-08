@@ -1,0 +1,11 @@
+import '../node_modules/@fortawesome/fontawesome-free/js/regular.js';
+import '../node_modules/@fortawesome/fontawesome-free/js/solid.js';
+import '../node_modules/@fortawesome/fontawesome-free/css/regular.min.css';
+import '../node_modules/@fortawesome/fontawesome-free/css/solid.min.css';
+import '../node_modules/jquery-ui/themes/base/base.css';
+import '../node_modules/jquery-ui/themes/base/theme.css';
+import '../node_modules/jquery/dist/jquery';
+import '../node_modules/jquery-ui/ui/widgets/datepicker';
+import '../node_modules/jquery-ui/ui/widgets/dialog';
+import './scss/main.scss';
+import './js/script.js';
