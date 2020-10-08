@@ -357,7 +357,11 @@ class TodoListView {
         addProjectButton.classList.add('project-button');
         addProjectButton.innerText = 'Add TODO List';
         mainContent.append(addProjectButton);
-        
+
+        const dialog = document.createElement('div');
+        dialog.classList.add('dialog');
+        dialog.innerText = 'Please, input name of task for creating.'
+        mainContent.append(dialog);        
     }
 
     showProject(currentProjects) {
@@ -666,7 +670,9 @@ class TodoListController {
         });
 
         $('.dialog').dialog({
-            buttons: [{text: "OK", click: function() {$(this).dialog("close")}}],
+            /* buttons: [{text: "OK", click: function() {$(this).dialog("close")}}], */
+            title: 'Uncorrect name of task',
+            minHeight: false,
             autoOpen: false,
             modal:true
         });
@@ -702,7 +708,7 @@ class TodoListController {
                 this.handleTasksList(currentProject);
                 parent.childNodes[1].value = '';
             } else {
-                alert('Please, enter name of task');
+                $('.dialog').dialog("open");
             }
         }
 

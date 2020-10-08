@@ -583,6 +583,15 @@ img.ui-datepicker-trigger {
   color: #fff;
 }
 
+.ui-widget-header {
+  background: #5f7caa;
+  color: #ffffff;
+}
+
+.dialog {
+  display: none;
+}
+
 .main-content {
   display: flex;
   justify-content: space-between;
