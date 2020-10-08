@@ -121,7 +121,8 @@ app.put('/projects/:id', (req, res) => {
             console.error(err);
             return res.sendStatus(500);
         }
-        project.name = req.body.name;
+        if(req.body.name) project.name = req.body.name;
+        if(req.body.deadline) project.deadline = req.body.deadline;
         project.save();
         res.sendStatus(200);
     });

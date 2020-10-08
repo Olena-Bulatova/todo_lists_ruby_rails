@@ -179,9 +179,33 @@ textarea {
     }
 }
 
-//Project styles
+//Datepickerstyles
 //-----------------------------------------------------------------------------
 
+img.ui-datepicker-trigger {
+    flex-grow: 1;
+    background-color: transparent;
+    width: 25px;
+    margin-right: 10px;
+}
+
+.ui-datepicker-trigger:hover {
+    opacity: .8;
+    cursor: pointer;
+}
+.ui-widget.ui-widget-content {
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border-color: $plusColorAddButton;
+    background: $elementColor;
+    color: #fff;
+}
+
+//Project styles
+//-----------------------------------------------------------------------------
 .main-content {
     display: flex;
     justify-content: space-between;
@@ -221,11 +245,7 @@ textarea {
         }
 
         &--calendar {
-            &::before {
-                content: "\f073";
-                font-size: 2rem;
-                color: #475e82;
-            }
+            display: none;
         }
 
         &--edit {

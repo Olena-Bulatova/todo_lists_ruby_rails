@@ -334,8 +334,6 @@ class SignInController  {
                 }
             }
         });
-
-
     }
 }
 
@@ -377,9 +375,11 @@ class TodoListView {
                 projectHeader.classList.add('project__header');
                 project.append(projectHeader);
     
-                const projectTime = document.createElement('button');
+                const projectTime = document.createElement('input');
                 projectTime.classList.add('project__button');
                 projectTime.classList.add('project__button--calendar');
+                let date = new Date(item.deadline);
+                projectTime.value = item.deadline ? `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}` : '';
                 projectHeader.append(projectTime);
     
                 const projectTitle = document.createElement('input');
@@ -595,7 +595,6 @@ class TodoListForm {
         })
         .then(response => response)
         .catch(err => console.error(`Connection Error:${err}`));
-
     }
 
     deleteTask(currentTask) {
@@ -655,6 +654,44 @@ class TodoListController {
 
     actionForProject() {
         const taskAdd = document.querySelectorAll('.project__button--add');
+
+        $('.project__button--calendar').datepicker({
+            showOn: 'button',
+            buttonImage: '../images/calendar-alt-regular.svg',
+            buttonImageOnly: true,
+            onSelect: function() {
+                let eventInput = new Event('change');
+                inputDate.dispatchEvent(eventInput);
+            },
+        });
+
+        $('.dialog').dialog({
+            buttons: [{text: "OK", click: function() {$(this).dialog("close")}}],
+            autoOpen: false,
+            modal:true
+        });
+
+        const buttonDate = document.querySelectorAll('.ui-datepicker-trigger');
+        let currentDate = null;
+        let inputDate = null;
+
+        buttonDate.forEach(item => {
+            item.addEventListener('click', event => {
+                currentDate = event.target;
+                inputDate = currentDate.parentElement.querySelector('.project__button--calendar');
+            });
+        });
+
+        const calendar = document.querySelectorAll('.project__button--calendar');
+
+        calendar.forEach( item => {
+            item.addEventListener('change', (event) => {
+                let parent = event.target.parentElement;
+                let currentProject = parent.parentElement.id;
+                let deadline = { deadline: new Date(event.target.value)};
+                this.model.updateTodoList(currentProject, deadline);
+            });
+        });
 
         let addTask = async(event) => {
             let parent = event.target.parentElement;
@@ -740,7 +777,6 @@ class TodoListController {
                 let parent = event.target.parentElement;
                 let currentProject = parent.parentElement;
                 let taskList = currentProject.querySelector('.project__task-list');
-                console.log(taskList.classList);
             });
         });
         
