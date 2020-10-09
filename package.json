@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./server/index.js",
+    "start": "node ./server/index.js",
+    "nodemon": "nodemon ./server/index.js",
     "watch": "webpack --watch",
     "build": "webpack",
     "dev": "webpack --env.mode=development",
