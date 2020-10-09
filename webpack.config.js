@@ -7,19 +7,19 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports =  {  
-        mode: 'development',
-        entry: __dirname + '/src/main.js',
+        mode: 'production',
+        entry: ['babel-polyfill', __dirname + '/src/main.js'],
         output: {
             path: __dirname + '/dist', 
             filename: 'main.js',  
-            publicPath: '/' 
+            publicPath: '/'
         },
         optimization: {
             minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
         },
         module: {  
             rules: [
-                /* {
+                {
                     test: /\.js/,
                     exclude: [
                         /node_modules/,
@@ -29,7 +29,7 @@ module.exports =  {
                     options: {
                         presets: ['@babel/preset-env']
                     }
-                }, */ 
+                }, 
                 { 
                     test: /\.s[ac]ss$/i,
                     use: [

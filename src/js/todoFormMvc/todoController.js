@@ -48,7 +48,7 @@ export default class TodoListController {
 
         $('.project__button--calendar').datepicker({
             showOn: 'button',
-            buttonImage: '../images/calendar-alt-regular.svg',
+            buttonImage: '../images/calendar.svg',
             buttonImageOnly: true,
             onSelect: function() {
                 let eventInput = new Event('change');
@@ -87,12 +87,13 @@ export default class TodoListController {
 
         let addTask = async(event) => {
             let parent = event.target.parentElement;
-            let currentProject = parent.parentElement.id;                                  
+            let currentProject = parent.parentElement;
+            let projectTitle = currentProject.querySelector('.project__task-name');                               
             
-            if(parent.childNodes[1].value) {
-                await this.model.addTasks(currentProject, parent.childNodes[1].value);
-                this.handleTasksList(currentProject);
-                parent.childNodes[1].value = '';
+            if(projectTitle.value) {
+                await this.model.addTasks(currentProject.id, projectTitle.value);
+                this.handleTasksList(currentProject.id);
+                projectTitle.value = '';
             } else {
                 $('.dialog').dialog("open");
             }
@@ -147,28 +148,29 @@ export default class TodoListController {
                 deleteProject();
             });
         });
+        
         const projectEditName = document.querySelectorAll('.project__button--edit');
 
         projectEditName.forEach( item => {
             item.addEventListener('click', event => {                
-                let parent = event.target.parentElement;
-                let currentProject = parent.parentElement.id;
-                const project = document.querySelectorAll('.project');
-                project.forEach( toDo => {
-                    if(toDo.id === currentProject) {
-                        toDo.childNodes[0].childNodes[1].focus();
-                    }
-                })
-
+                let currentProject = event.target.parentElement;
+                let projectTitle = currentProject.querySelector('.project__title');
+                if(projectTitle) projectTitle.focus();
             });
         });
 
-        const taskListShow = document.querySelectorAll('project__button--show');
+        const taskListShow = document.querySelectorAll('.project__button--show');
         taskListShow.forEach( item => {
             item.addEventListener('click', event => {                
                 let parent = event.target.parentElement;
                 let currentProject = parent.parentElement;
                 let taskList = currentProject.querySelector('.project__task-list');
+                let taskClass = Object.values(taskList.classList).includes('project__task-list--hidden');
+                if(taskClass) {
+                    taskList.classList.remove('project__task-list--hidden');
+                } else {
+                    taskList.classList.add('project__task-list--hidden');
+                }
             });
         });
         
@@ -201,15 +203,9 @@ export default class TodoListController {
 
         editBnt.forEach( item => {
             item.addEventListener('click', event => {                
-                let parent = event.target.parentElement;
-                let currentTask = parent.parentElement.id;
-                const tasks = project.querySelectorAll('.project__task-item');
-                tasks.forEach( task => {
-                    if(task.id === currentTask) {
-                        task.childNodes[1].childNodes[0].focus();
-                    }
-                })
-
+                let parent = event.target.parentElement.parentElement;
+                const taskName = parent.querySelector('.project__task-input--name');
+                if(taskName) taskName.focus();
             });
         })          
 
@@ -253,6 +249,21 @@ export default class TodoListController {
                     this.handleTasksList(currentTask.parentElement.parentElement.id);
                 }
                 deleteTask();
+            });
+        });
+
+        const taskListShow = document.querySelectorAll('.project__button--show');
+        taskListShow.forEach( item => {
+            item.addEventListener('click', event => {               
+                let parent = event.target.parentElement.parentElement;
+                let cuurentTaskList = parent.querySelector('.project__task-list');
+                let tasksClass = Object.values(cuurentTaskList.classList).includes('project__task-list--hidden');
+
+                if(tasksClass) {
+                    cuurentTaskList.classList.remove('project__task-list--hidden');
+                } else {
+                    cuurentTaskList.classList.add('project__task-list--hidden');
+                }
             });
         });
 

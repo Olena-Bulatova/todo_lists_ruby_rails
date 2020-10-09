@@ -179,14 +179,14 @@ textarea {
     }
 }
 
-//Datepickerstyles
+//Datepicker styles
 //-----------------------------------------------------------------------------
 
 img.ui-datepicker-trigger {
     flex-grow: 1;
     background-color: transparent;
-    width: 25px;
-    margin-right: 10px;
+    width: 30px;
+    margin-right: 5px;
 }
 
 .ui-datepicker-trigger:hover {
@@ -326,6 +326,10 @@ img.ui-datepicker-trigger {
             background-color: #fff;                
             border-radius: 0 0 20px 20px;
             overflow: hidden;
+
+            &--hidden {
+                display: none;
+            }
         }
         
         &-item {
