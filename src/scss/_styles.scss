@@ -467,4 +467,8 @@ img.ui-datepicker-trigger {
             color: $plusColorAddButton;
         }
     }
+
+    &__message {
+        background-color: rgba($elementColor, 0.5);
+    }
 }

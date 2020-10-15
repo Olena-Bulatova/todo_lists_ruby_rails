@@ -44,7 +44,7 @@ export default class TodoListView {
                 projectTime.classList.add('project__button--calendar');
                 let date = new Date(item.deadline);
                 projectTime.value = item.deadline ? `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}` : '';
-                projectHeader.append(projectTime);
+                projectHeader.append(projectTime);                
     
                 const projectTitle = document.createElement('input');
                 projectTitle.classList.add('project__title');
@@ -60,8 +60,8 @@ export default class TodoListView {
                 const projectDelete = document.createElement('button');
                 projectDelete.classList.add('project__button');
                 projectDelete.classList.add('project__button--delete');
-                projectHeader.append(projectDelete);
-    
+                projectHeader.append(projectDelete);  
+
                 const taskTitle = document.createElement('div');
                 taskTitle.classList.add('project__task-title');
                 project.append(taskTitle);
@@ -89,12 +89,43 @@ export default class TodoListView {
         }      
     }
 
+    showDeadlineMessage(currentTodo, doneStatus) {
+        const projectTime = currentTodo.querySelector('.project__button--calendar').value;
+        const projectHeader = currentTodo.querySelector('.project__header');
+        let dateOfTodo = new Date(projectTime)
+        let currentDate = new Date();        
+        let message = currentTodo.querySelector('.form__message');
+
+        if(message) {
+            message.remove();
+        }
+
+        if(currentDate >= dateOfTodo) {
+            message = document.createElement('p');
+            message.classList.add('form__message');
+            message.classList.add('project__message');
+            projectHeader.before(message);            
+
+            if(doneStatus) {                
+                message.classList.add('form__message--success');
+                message.innerText = 'TODO list deadline has expired and you have completed all tasks.';
+            } else {
+                message.classList.add('form__message--error');
+                message.innerText = 'TODO list deadline has expired, choose a new date or mark the tasks as completed.';
+            }
+
+        }
+    }
+
     showTaskList(currentTasks, currentProject) {
         const project = document.getElementById(currentProject);
         const taskList = project.querySelector('.project__task-list');
         taskList.innerHTML = '';
+        let doneStatus = false;
+        let amountTasks = currentTasks.length;
+        let amountCheckTasks = 0;
         
-        if(currentTasks.length) {
+        if(amountTasks) {
 
             currentTasks.forEach( item => {
                 const rowTask = document.createElement('tr');
@@ -123,6 +154,7 @@ export default class TodoListView {
                 if(item.done) {
                     inputName.classList.add('project__task-input--done');
                     checkBnt.checked = 'checked';
+                    amountCheckTasks++;
                 }
                 checkTask.append(checkBnt);
 
@@ -150,8 +182,11 @@ export default class TodoListView {
     
             });
 
+            if(amountTasks === amountCheckTasks) {
+                doneStatus = true;
+            }
         }
         
-    }
-    
+        this.showDeadlineMessage(project, doneStatus);   
+    }    
 }

@@ -79,7 +79,7 @@ export default class TodoListController {
         calendar.forEach( item => {
             item.addEventListener('change', (event) => {
                 let parent = event.target.parentElement;
-                let currentProject = parent.parentElement.id;
+                let currentProject = parent.parentElement;
                 let deadline = { deadline: new Date(event.target.value)};
                 this.model.updateTodoList(currentProject, deadline);
             });
@@ -118,7 +118,7 @@ export default class TodoListController {
 
         let editName = async (event) => {
             let parent = event.target.parentElement;
-            let currentProject = parent.parentElement.id;
+            let currentProject = parent.parentElement;
             let nameProject = { name: event.target.value};                             
             await this.model.updateTodoList(currentProject, nameProject);            
             this.handleProject();
@@ -157,23 +157,16 @@ export default class TodoListController {
                 let projectTitle = currentProject.querySelector('.project__title');
                 if(projectTitle) projectTitle.focus();
             });
-        });
+        });        
 
         const taskListShow = document.querySelectorAll('.project__button--show');
         taskListShow.forEach( item => {
-            item.addEventListener('click', event => {                
-                let parent = event.target.parentElement;
-                let currentProject = parent.parentElement;
-                let taskList = currentProject.querySelector('.project__task-list');
-                let taskClass = Object.values(taskList.classList).includes('project__task-list--hidden');
-                if(taskClass) {
-                    taskList.classList.remove('project__task-list--hidden');
-                } else {
-                    taskList.classList.add('project__task-list--hidden');
-                }
+            item.addEventListener('click', event => {               
+                let parent = event.target.parentElement.parentElement;
+                let cuurentTaskList = parent.querySelector('.project__task-list');
+                cuurentTaskList.classList.toggle('project__task-list--hidden');
             });
-        });
-        
+        });        
     }
 
     actionForTasks(project) {
@@ -249,21 +242,6 @@ export default class TodoListController {
                     this.handleTasksList(currentTask.parentElement.parentElement.id);
                 }
                 deleteTask();
-            });
-        });
-
-        const taskListShow = document.querySelectorAll('.project__button--show');
-        taskListShow.forEach( item => {
-            item.addEventListener('click', event => {               
-                let parent = event.target.parentElement.parentElement;
-                let cuurentTaskList = parent.querySelector('.project__task-list');
-                let tasksClass = Object.values(cuurentTaskList.classList).includes('project__task-list--hidden');
-
-                if(tasksClass) {
-                    cuurentTaskList.classList.remove('project__task-list--hidden');
-                } else {
-                    cuurentTaskList.classList.add('project__task-list--hidden');
-                }
             });
         });
 

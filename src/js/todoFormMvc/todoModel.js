@@ -9,7 +9,7 @@ export default class TodoListForm {
         this.currentUser = currentUser;
         this.view.showForm();
     }
-
+    
     getTodoList() {
         return fetch(`/projects/${this.currentUser}`)
         .then(currentProjects => currentProjects.json())
@@ -42,14 +42,14 @@ export default class TodoListForm {
     }
     
     updateTodoList(currentProject, newName) {
-        return fetch(`/projects/${currentProject}`, {
+        return fetch(`/projects/${currentProject.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
                 },
             body: JSON.stringify(newName)
         })
-        .then(response => response)
+        .then(() => this.view.showDeadlineMessage(currentProject))
         .catch(err => console.error(`Connection Error:${err}`));
     }
 
