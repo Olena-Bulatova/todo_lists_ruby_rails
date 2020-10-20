@@ -182,11 +182,8 @@ textarea {
 //Datepicker styles
 //-----------------------------------------------------------------------------
 
-img.ui-datepicker-trigger {
-    flex-grow: 1;
+.ui-datepicker-trigger {
     background-color: transparent;
-    width: 30px;
-    margin-right: 5px;
 }
 
 .ui-datepicker-trigger:hover {
@@ -243,7 +240,13 @@ img.ui-datepicker-trigger {
     &__header {
         color: #fff;
         font-size: 20px;
-        background-color: $elementColor;
+        background-color: $elementColor;        
+
+        .ui-datepicker-trigger {
+            flex-grow: 1;
+            width: 30px;
+            margin-right: 5px;
+        }
     }
 
     &__button {
@@ -309,6 +312,9 @@ img.ui-datepicker-trigger {
     }
 
     &__task {
+        &--calendar {
+            display: none;
+        }
 
         &-title {
             background-color: #dcdcdc;
@@ -343,6 +349,10 @@ img.ui-datepicker-trigger {
             &:hover {
                 background-color: #fcfed5;
                 cursor: pointer;
+            }
+
+            &--expired {
+                background-color: rgba(232, 143, 143, .3);
             }
         }
 
@@ -415,8 +425,10 @@ img.ui-datepicker-trigger {
 
             &::before {            
                 font-size: 1rem;
-                font-family: "Font Awesome 5 Free";
+                font-family: "Font Awesome 5 Free";                
+                padding-right: 10px;
                 color: rgba(123, 123, 123, .8);
+                border-right: 1px solid rgba(123, 123, 123, .8);
             }
         }        
 
@@ -424,9 +436,7 @@ img.ui-datepicker-trigger {
 
             &::before {
                 content: "\f304";
-                padding-right: 10px;
                 font-weight: bold;
-                border-right: 1px solid rgba(123, 123, 123, .8);
             }
         }
 
@@ -434,6 +444,18 @@ img.ui-datepicker-trigger {
             
             &::before {
                 content: "\f2ed";
+            }
+        }
+
+        &-action {
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+
+            .ui-datepicker-trigger {
+                width: 16px;
+                margin-right: 5px;
             }
         }
     }
@@ -471,4 +493,6 @@ img.ui-datepicker-trigger {
     &__message {
         background-color: rgba($elementColor, 0.5);
     }
+
+    
 }

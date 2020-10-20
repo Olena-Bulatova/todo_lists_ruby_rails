@@ -170,6 +170,43 @@ export default class TodoListController {
     }
 
     actionForTasks(project) {
+
+        $('.project__task--calendar').datepicker({
+            showOn: 'button',
+            buttonImage: '../images/calendar-task.svg',
+            buttonImageOnly: true,
+            onSelect: function() {
+                let eventInput = new Event('change');
+                inputDate.dispatchEvent(eventInput);
+            },
+        });
+
+        const buttonDate = project.querySelectorAll('.ui-datepicker-trigger');
+        let currentDate = null;
+        let inputDate = null;
+
+        buttonDate.forEach(item => {
+            item.addEventListener('click', event => {
+                currentDate = event.target;
+                inputDate = currentDate.parentElement.querySelector('.project__task--calendar');
+            });
+        });
+
+        const calendar = project.querySelectorAll('.project__task--calendar');
+
+        calendar.forEach( item => {
+            item.addEventListener('change', (event) => {
+                let parent = event.target.parentElement;
+                let currentTask = parent.parentElement;
+                let deadline = { deadline: new Date(event.target.value)};
+                let editDate = async () => {
+                    await this.model.updateTasks(currentTask.id, deadline);
+                    this.handleTasksList(currentTask.parentElement.parentElement.id);
+                };
+                editDate();                
+            });
+        });
+
         const inputName = project.querySelectorAll('.project__task-input--name');
 
         let editName = async (event) => {                

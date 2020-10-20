@@ -27,6 +27,7 @@ const updateTask = (req, res) => {
         if(req.body.nameTask) task.nameTask = req.body.nameTask;
         task.done = req.body.done || false;        
         if(req.body.priority) task.priority = req.body.priority;
+        if(req.body.deadline) task.deadline = req.body.deadline;
         task.save();
         res.sendStatus(200);
     });

@@ -9,6 +9,10 @@ const TasksShema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
+    deadline: {
+        type: Date,
+        required: false,
+    },
     priority: {
         type: String,
         required: false,

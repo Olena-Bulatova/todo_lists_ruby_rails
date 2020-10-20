@@ -178,7 +178,19 @@ export default class TodoListView {
                 const deleteBnt = document.createElement('button');
                 deleteBnt.classList.add('project__task-button');
                 deleteBnt.classList.add('project__task--delete');
-                actionTask.append(deleteBnt);     
+                actionTask.append(deleteBnt);
+                
+                const dateBnt = document.createElement('input');
+                dateBnt.classList.add('project__task-button');
+                dateBnt.classList.add('project__task--calendar');
+                let date = new Date(item.deadline);
+                dateBnt.value = item.deadline ? `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}` : '';
+                actionTask.append(dateBnt);
+
+                let currentDate = new Date();
+                if(currentDate >= date && !item.done) {
+                    rowTask.classList.add('project__task-item--expired');
+                }
     
             });
 

@@ -12,7 +12,7 @@ module.exports =  {
         output: {
             path: __dirname + '/dist', 
             filename: 'main.js',  
-            publicPath: '/'
+            publicPath: './'
         },
         optimization: {
             minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
